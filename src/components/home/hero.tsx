@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import BlurImage from '@/components/blur-image'
 import { MY_NAME } from '@/lib/constants'
 import { strings } from '@/lib/strings'
+import { DownloadIcon } from 'lucide-react'
 
 const TEXTS = [
   {
@@ -127,13 +128,14 @@ function Hero() {
               className='absolute inset-0 rounded-full bg-[linear-gradient(90deg,#FF7E00,#FF5757)]'
               aria-hidden
             />
-            <span className='relative z-10 flex flex-1 items-center justify-center rounded-full bg-background px-4 py-2 text-base font-medium text-foreground transition-[background-color,color,text-shadow] duration-300 group-hover:bg-transparent group-hover:text-white group-hover:[text-shadow:0_1px_3px_rgba(0,0,0,0.6)]'>
+            <span className='relative z-10 flex flex-1 items-center justify-center gap-2 rounded-full bg-background px-4 py-2 text-base font-medium text-foreground transition-[background-color,color,text-shadow] duration-300 group-hover:bg-transparent group-hover:text-white group-hover:[text-shadow:0_1px_3px_rgba(0,0,0,0.6)]'>
+              <DownloadIcon className='size-4 shrink-0' aria-hidden />
               {strings.homepage.hero['hire-me']}
             </span>
           </motion.a>
         </div>
         <motion.div
-          className='relative size-20 shrink-0 md:size-40'
+          className='relative size-24 shrink-0 md:size-44'
           initial={{
             scale: 0,
           }}
