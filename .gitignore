@@ -9,6 +9,7 @@ node_modules/
 .vercel/
 
 # Misc
+.cursor/
 .DS_Store
 
 # Outputs
