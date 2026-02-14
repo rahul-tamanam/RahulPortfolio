@@ -1,4 +1,4 @@
-import { Link as LocalizedLink } from '@/i18n/routing'
+import NextLink from 'next/link'
 
 type LinkProps = React.ComponentProps<'a'>
 
@@ -9,24 +9,14 @@ function Link(props: LinkProps) {
     throw new Error('Link must have an href')
   }
 
-  if (href.startsWith('/')) {
-    return (
-      <LocalizedLink href={href} {...rest}>
-        {children}
-      </LocalizedLink>
-    )
+  if (href.startsWith('/') || href.startsWith('#')) {
+    const { href: _h, ...linkRest } = rest as React.ComponentProps<'a'>
+    return <NextLink href={href} {...linkRest}>{children}</NextLink>
   }
 
-  if (href.startsWith('#')) {
-    return (
-      <a href={href} {...rest}>
-        {children}
-      </a>
-    )
-  }
-
+  const { prefetch: _prefetch, ...anchorRest } = rest as React.ComponentProps<'a'> & { prefetch?: boolean }
   return (
-    <a target='_blank' rel='noopener noreferrer' href={href} {...rest}>
+    <a target='_blank' rel='noopener noreferrer' href={href} {...anchorRest}>
       {children}
     </a>
   )

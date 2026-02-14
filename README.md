@@ -200,6 +200,34 @@ pnpm db:seed          # Seed the database
 pnpm db:studio        # Open Drizzle Studio
 ```
 
+## Deploy on Vercel
+
+1. **Push your code** to GitHub, GitLab, or Bitbucket.
+
+2. **Import the project** on [Vercel](https://vercel.com):
+   - Go to [vercel.com/new](https://vercel.com/new)
+   - Import your repository
+   - Vercel will detect Next.js and use **pnpm** (from `packageManager` in `package.json`)
+
+3. **Configure environment variables** in your Vercel project (Settings → Environment Variables). Add at least these **required** variables:
+
+   | Variable | Description |
+   |----------|-------------|
+   | `NEXT_PUBLIC_SITE_URL` | Your production URL (e.g. `https://your-domain.vercel.app`) |
+   | `DATABASE_URL` | PostgreSQL connection string (e.g. [Vercel Postgres](https://vercel.com/storage/postgres) or [Neon](https://neon.tech)) |
+   | `UPSTASH_REDIS_REST_URL` | [Upstash Redis](https://upstash.com) REST URL |
+   | `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis REST token |
+   | `IP_ADDRESS_SALT` | Random passphrase for IP hashing (e.g. from [useapassphrase.com](https://www.useapassphrase.com/)) |
+   | `BETTER_AUTH_SECRET` | Secret for Better Auth (min 32 characters; use a random string for production) |
+
+   Optional variables (see `.env.example`): OAuth (Google/GitHub), Resend, Cloudflare R2, PostHog, Umami, etc.
+
+4. **Run database migrations** after the first deploy:
+   - Use Vercel’s run script (e.g. add a one-off script or use a post-deploy step), or
+   - Run locally: `DATABASE_URL="your-production-database-url" pnpm db:migrate`
+
+5. **Deploy** — Vercel will run `pnpm run build`. The build uses Vercel’s environment; no `.env.local` file is needed in the repo.
+
 ## Credits
 
 This project has been made possible thanks to the wonderful open-source community. Special thanks to:

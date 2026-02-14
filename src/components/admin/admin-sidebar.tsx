@@ -10,7 +10,7 @@ function AdminSidebar() {
     <Sidebar collapsible='icon' variant='floating'>
       <SidebarContent>
         {ADMIN_SIDEBAR_LINKS.map((group) => (
-          <AdminNavGroup key={group.titleKey} {...group} />
+          <AdminNavGroup key={group.title} {...group} />
         ))}
       </SidebarContent>
     </Sidebar>

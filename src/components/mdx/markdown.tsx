@@ -1,11 +1,9 @@
 import MarkdownToJSX from 'markdown-to-jsx'
 import { Fragment, memo } from 'react'
 
+import { CodeBlock } from '@/components/ui/code-block'
 import { Link } from '@/components/ui/link'
-import { TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-
-import CommentCodeBlock from '../comment-section/comment-code-block'
-import CommentTable from '../comment-section/comment-table'
+import { Table, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 type MarkdownProps = {
   children: string
@@ -20,8 +18,8 @@ const Markdown = memo((props: MarkdownProps) => {
         options={{
           overrides: {
             a: Link,
-            pre: CommentCodeBlock,
-            table: CommentTable,
+            pre: CodeBlock,
+            table: Table,
             thead: TableHeader,
             tr: TableRow,
             th: TableHead,

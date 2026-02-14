@@ -1,10 +1,10 @@
 'use client'
 
 import { motion, useAnimate, useInView } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import { useEffect, useRef } from 'react'
 
 import BlurImage from '@/components/blur-image'
+import { strings } from '@/lib/strings'
 import { cn } from '@/utils/cn'
 
 import { buttonVariants } from '../ui/button'
@@ -24,7 +24,6 @@ function GetInTouch() {
   const [scope, animate] = useAnimate()
   const cardsRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardsRef, { once: true, margin: '-100px' })
-  const t = useTranslations()
 
   useEffect(() => {
     animate(
@@ -65,7 +64,7 @@ function GetInTouch() {
           width={1024}
           height={1024}
           className='absolute top-1/2 left-1/2 size-20 -translate-1/2 rounded-3xl'
-          alt={t('homepage.get-in-touch.image-alt')}
+          alt={strings.homepage['get-in-touch']['image-alt']}
         />
         <div
           id='next-js'
@@ -113,8 +112,8 @@ function GetInTouch() {
       </div>
 
       <div className='flex flex-col justify-center px-4'>
-        <p className='mb-2 text-3xl font-semibold'>{t('homepage.get-in-touch.title')}</p>
-        <p className='text-muted-foreground'>{t('homepage.get-in-touch.description')}</p>
+        <p className='mb-2 text-3xl font-semibold'>{strings.homepage['get-in-touch'].title}</p>
+        <p className='text-muted-foreground'>{strings.homepage['get-in-touch'].description}</p>
         <div className='my-8'>
           <a href='mailto:me@nelsonlai.dev' className={cn(buttonVariants(), 'bg-email-button text-white')}>
             me@nelsonlai.dev

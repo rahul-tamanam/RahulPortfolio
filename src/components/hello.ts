@@ -10,7 +10,7 @@ function Hello() {
 
 If you're digging this code, check out my GitHub repo:
 
-https://github.com/nelsonlaidev/nelsonlai.dev
+https://github.com/rahultamanam/nelsonlai.dev
 
 and give it a star ⭐
 `,

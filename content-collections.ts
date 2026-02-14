@@ -14,34 +14,21 @@ async function transform<D extends BaseDoc>(document: D, context: Context) {
     remarkPlugins,
     rehypePlugins,
   })
-  const [locale, path] = document._meta.path.split(/[/\\]/)
-
-  if (!locale || !path) {
+  const pathParts = document._meta.path.split(/[/\\]/)
+  const slug = pathParts[pathParts.length - 1]?.replace(/\.mdx?$/, '') ?? ''
+  if (!slug) {
     throw new Error(`Invalid path: ${document._meta.path}`)
   }
 
   return {
     ...document,
     code,
-    locale,
-    slug: path,
+    locale: 'en',
+    slug,
     toc: await getTOC(document.content),
   }
 }
 
-const posts = defineCollection({
-  name: 'Post',
-  directory: 'src/content/blog',
-  include: '**/*.mdx',
-  schema: z.object({
-    title: z.string(),
-    date: z.string(),
-    modifiedTime: z.string(),
-    summary: z.string(),
-    content: z.string(),
-  }),
-  transform,
-})
 
 const projects = defineCollection({
   name: 'Project',
@@ -71,5 +58,5 @@ const pages = defineCollection({
 })
 
 export default defineConfig({
-  collections: [posts, projects, pages],
+  collections: [projects, pages],
 })

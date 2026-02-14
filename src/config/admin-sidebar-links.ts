@@ -1,23 +1,20 @@
-import { LayoutDashboardIcon, MessagesSquareIcon, UsersIcon } from 'lucide-react'
+import { LayoutDashboardIcon, UsersIcon } from 'lucide-react'
+
+import { strings } from '@/lib/strings'
 
 export const ADMIN_SIDEBAR_LINKS = [
   {
-    titleKey: 'common.labels.general',
+    title: strings.common.labels.general,
     links: [
       {
-        titleKey: 'common.labels.dashboard',
+        title: strings.common.labels.dashboard,
         url: '/admin',
         icon: LayoutDashboardIcon,
       },
       {
-        titleKey: 'common.labels.users',
+        title: strings.common.labels.users,
         url: '/admin/users',
         icon: UsersIcon,
-      },
-      {
-        titleKey: 'common.labels.comments',
-        url: '/admin/comments',
-        icon: MessagesSquareIcon,
       },
     ],
   },

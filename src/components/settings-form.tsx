@@ -1,7 +1,6 @@
 import type { SettingsGetOutput } from '@/orpc/client'
 
 import { useForm, useStore } from '@tanstack/react-form'
-import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -10,6 +9,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Switch } from '@/components/ui/switch'
 import { useUpdateSettings } from '@/hooks/queries/settings.query'
+import { strings } from '@/lib/strings'
 
 import { Spinner } from './ui/spinner'
 
@@ -23,7 +23,6 @@ const SettingsFormSchema = z.object({
 
 function SettingsForm(props: SettingsFormProps) {
   const { settings } = props
-  const t = useTranslations()
 
   const form = useForm({
     defaultValues: {
@@ -40,7 +39,7 @@ function SettingsForm(props: SettingsFormProps) {
 
   const { mutate: updateSettings, isPending: isUpdating } = useUpdateSettings(() => {
     form.reset()
-    toast.success(t('success.settings-updated'))
+    toast.success(strings.success['settings-updated'])
   })
 
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
@@ -55,7 +54,7 @@ function SettingsForm(props: SettingsFormProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className='space-y-12' id='edit-settings-form'>
           <div className='space-y-6'>
-            <h2 className='text-lg font-semibold'>{t('settings.notification-settings')}</h2>
+            <h2 className='text-lg font-semibold'>{strings.settings['notification-settings']}</h2>
             <FieldGroup>
               <form.Field name='replyNotificationsEnabled'>
                 {(field) => {
@@ -64,8 +63,8 @@ function SettingsForm(props: SettingsFormProps) {
                   return (
                     <Field orientation='horizontal' data-invalid={isInvalid}>
                       <FieldContent>
-                        <FieldLabel htmlFor={field.name}>{t('settings.reply-notification')}</FieldLabel>
-                        <FieldDescription>{t('settings.reply-notification-description')}</FieldDescription>
+                        <FieldLabel htmlFor={field.name}>{strings.settings['reply-notification']}</FieldLabel>
+                        <FieldDescription>{strings.settings['reply-notification-description']}</FieldDescription>
                         {isInvalid && <FieldError errors={field.state.meta.errors} />}
                       </FieldContent>
                       <Switch
@@ -94,12 +93,12 @@ function SettingsForm(props: SettingsFormProps) {
             }}
             disabled={isUpdating}
           >
-            {t('common.reset')}
+            {strings.common.reset}
           </Button>
         )}
         <Button type='submit' form='edit-settings-form' disabled={!isDirty || isUpdating}>
           {isUpdating && <Spinner />}
-          {t('common.save')}
+          {strings.common.save}
         </Button>
       </CardFooter>
     </Card>

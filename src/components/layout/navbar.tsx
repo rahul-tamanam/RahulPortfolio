@@ -1,14 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 
 import { Link } from '@/components/ui/link'
 import { HEADER_LINKS } from '@/config/links'
-import { usePathname } from '@/i18n/routing'
 
 function Navbar() {
   const pathname = usePathname()
-  const t = useTranslations()
 
   return (
     <nav className='hidden md:block'>
@@ -20,7 +18,7 @@ function Navbar() {
               data-active={link.href === pathname}
               href={link.href}
             >
-              {t(link.labelKey)}
+              {link.label}
             </Link>
           </li>
         ))}

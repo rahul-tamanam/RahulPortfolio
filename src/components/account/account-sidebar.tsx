@@ -1,12 +1,11 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 
 import { ACCOUNT_SIDEBAR_LINKS } from '@/config/links'
-import { Link, usePathname } from '@/i18n/routing'
+import { Link } from '@/components/ui/link'
 
 function AccountSidebar() {
-  const t = useTranslations()
   const pathname = usePathname()
 
   return (
@@ -19,7 +18,7 @@ function AccountSidebar() {
               data-active={pathname === link.href}
               className='block rounded-xl px-3 py-2 text-muted-foreground transition-colors hover:bg-accent data-active:text-foreground'
             >
-              {t(link.labelKey)}
+              {link.label}
             </Link>
           </li>
         ))}

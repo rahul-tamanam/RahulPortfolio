@@ -1,16 +1,16 @@
 'use client'
 
 import { motion, useInView } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 
 import { buttonVariants } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
+import { strings } from '@/lib/strings'
 import { cn } from '@/utils/cn'
 
-import CodingHours from './coding-hours'
+import OpenTo from './open-to'
 import Connect from './connect'
-import FavoriteFramework from './favorite-framework'
+import BadgesCertifications from './badges-certifications'
 import LocationCard from './location-card'
 import StacksCard from './stacks-card'
 
@@ -28,7 +28,6 @@ const variants = {
 function AboutMe() {
   const cardsRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardsRef, { once: true, margin: '-100px' })
-  const t = useTranslations()
 
   return (
     <motion.div
@@ -55,7 +54,7 @@ function AboutMe() {
           duration: 0.3,
         }}
       >
-        {t('homepage.about-me.title')}
+        {strings.homepage['about-me'].title}
       </motion.h2>
       <motion.div
         className='mt-12 grid gap-4 md:grid-cols-2'
@@ -78,14 +77,14 @@ function AboutMe() {
         <div className='grid gap-4'>
           <Connect />
           <div className='grid gap-4 [@media(min-width:450px)]:grid-cols-2'>
-            <CodingHours />
-            <FavoriteFramework />
+            <OpenTo />
+            <BadgesCertifications />
           </div>
         </div>
       </motion.div>
       <div className='my-8 flex items-center justify-center'>
         <Link href='/about' className={cn(buttonVariants({ variant: 'outline' }))}>
-          {t('homepage.about-me.more')}
+          {strings.homepage['about-me'].more}
         </Link>
       </div>
     </motion.div>

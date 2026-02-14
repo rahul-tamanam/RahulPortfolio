@@ -1,7 +1,6 @@
 'use client'
 
 import { useForm } from '@tanstack/react-form'
-import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -26,6 +25,7 @@ import { useGetAvatarUploadUrl } from '@/hooks/queries/r2.query'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { type User, useSession } from '@/lib/auth-client'
 import { AVATAR_MAX_FILE_SIZE, type AvatarMimeType, SUPPORTED_AVATAR_MIME_TYPES } from '@/lib/constants'
+import { strings } from '@/lib/strings'
 import { getAbbreviation } from '@/utils/get-abbreviation'
 
 import { Spinner } from '../ui/spinner'
@@ -34,11 +34,10 @@ import ProfileSkeleton from './profile-skeleton'
 
 function Profile() {
   const { data, isPending: isSessionLoading } = useSession()
-  const t = useTranslations()
 
   return (
     <div className='space-y-6'>
-      <h2 className='text-lg font-semibold'>{t('account.profile')}</h2>
+      <h2 className='text-lg font-semibold'>{strings.account.profile}</h2>
       {isSessionLoading && <ProfileSkeleton />}
       {data && <ProfileInfo user={data.user} />}
     </div>
@@ -52,17 +51,16 @@ type ProfileInfoProps = {
 function ProfileInfo(props: ProfileInfoProps) {
   const { user } = props
   const createdAt = useFormattedDate(user.createdAt)
-  const t = useTranslations()
 
   return (
     <Card className='p-4 sm:p-6'>
       <div className='flex items-center justify-between'>
         <div className='flex flex-col gap-2'>
-          <span className='text-muted-foreground'>{t('account.avatar')}</span>
+          <span className='text-muted-foreground'>{strings.account.avatar}</span>
           <Avatar className='size-24'>
             <AvatarImage
               src={user.image ?? undefined}
-              alt={t('common.avatar-alt', { name: user.name })}
+              alt={strings.common['avatar-alt'].replace('{name}', user.name)}
               className='size-full'
             />
             <AvatarFallback>{getAbbreviation(user.name)}</AvatarFallback>
@@ -72,20 +70,20 @@ function ProfileInfo(props: ProfileInfoProps) {
       </div>
       <div className='flex items-center justify-between'>
         <div className='flex flex-col gap-2'>
-          <span className='text-muted-foreground'>{t('account.display-name')}</span>
+          <span className='text-muted-foreground'>{strings.account['display-name']}</span>
           <span>{user.name}</span>
         </div>
         <EditName name={user.name} />
       </div>
       <div>
         <div className='flex flex-col gap-2'>
-          <span className='text-muted-foreground'>{t('account.email')}</span>
+          <span className='text-muted-foreground'>{strings.account.email}</span>
           <span>{user.email}</span>
         </div>
       </div>
       <div>
         <div className='flex flex-col gap-2'>
-          <span className='text-muted-foreground'>{t('account.account-created')}</span>
+          <span className='text-muted-foreground'>{strings.account['account-created']}</span>
           <span>{createdAt ?? '--'}</span>
         </div>
       </div>
@@ -100,11 +98,10 @@ type EditNameProps = {
 function EditName(props: EditNameProps) {
   const { name } = props
   const [open, setOpen] = useState(false)
-  const t = useTranslations()
   const { refetch: refetchSession } = useSession()
 
   const EditNameFormSchema = z.object({
-    name: z.string().min(1, t('error.name-cannot-be-empty')).max(50, t('error.name-too-long')),
+    name: z.string().min(1, strings.error['name-cannot-be-empty']).max(50, strings.error['name-too-long']),
   })
 
   const form = useForm({
@@ -122,7 +119,7 @@ function EditName(props: EditNameProps) {
 
   const { mutate: updateUser, isPending: isUpdating } = useUpdateUser(() => {
     setOpen(false)
-    toast.success(t('success.name-updated'))
+    toast.success(strings.success['name-updated'])
     refetchSession()
   })
 
@@ -133,11 +130,11 @@ function EditName(props: EditNameProps) {
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger render={<Button variant='outline'>{t('account.edit-name')}</Button>} />
+      <AlertDialogTrigger render={<Button variant='outline'>{strings.account['edit-name']}</Button>} />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('account.edit-name')}</AlertDialogTitle>
-          <AlertDialogDescription>{t('account.edit-name-description')}</AlertDialogDescription>
+          <AlertDialogTitle>{strings.account['edit-name']}</AlertDialogTitle>
+          <AlertDialogDescription>{strings.account['edit-name-description']}</AlertDialogDescription>
         </AlertDialogHeader>
         <form className='space-y-6' id='edit-name-form' onSubmit={handleSubmit}>
           <FieldGroup>
@@ -157,7 +154,7 @@ function EditName(props: EditNameProps) {
                       }}
                       aria-invalid={isInvalid}
                       disabled={isUpdating}
-                      placeholder={t('account.display-name')}
+                      placeholder={strings.account['display-name']}
                     />
                     {isInvalid && <FieldError errors={field.state.meta.errors} />}
                   </Field>
@@ -167,10 +164,10 @@ function EditName(props: EditNameProps) {
           </FieldGroup>
         </form>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isUpdating}>{t('common.cancel')}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isUpdating}>{strings.common.cancel}</AlertDialogCancel>
           <Button type='submit' form='edit-name-form' disabled={isUpdating}>
             {isUpdating && <Spinner data-icon='inline-start' />}
-            {t('common.save')}
+            {strings.common.save}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -179,14 +176,13 @@ function EditName(props: EditNameProps) {
 }
 
 function UpdateAvatar() {
-  const t = useTranslations()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const { refetch: refetchSession } = useSession()
 
   const { mutateAsync: getAvatarUploadUrl } = useGetAvatarUploadUrl()
   const { mutateAsync: updateUser } = useUpdateUser(() => {
-    toast.success(t('success.avatar-updated'))
+    toast.success(strings.success['avatar-updated'])
     refetchSession()
   })
 
@@ -203,13 +199,13 @@ function UpdateAvatar() {
     event.target.value = ''
 
     if (!SUPPORTED_AVATAR_MIME_TYPES.includes(file.type as AvatarMimeType)) {
-      toast.error(t('error.avatar-unsupported-file'))
+      toast.error(strings.error['avatar-unsupported-file'])
       return
     }
 
     if (file.size > AVATAR_MAX_FILE_SIZE) {
       const maxSizeInMb = (AVATAR_MAX_FILE_SIZE / (1024 * 1024)).toFixed(1)
-      toast.error(t('error.avatar-too-large', { size: maxSizeInMb }))
+      toast.error(strings.error['avatar-too-large'].replace('{size}', maxSizeInMb))
       return
     }
 
@@ -236,7 +232,7 @@ function UpdateAvatar() {
 
       await updateUser({ image: publicUrl })
     } catch {
-      toast.error(t('error.update-avatar-failed'))
+      toast.error(strings.error['update-avatar-failed'])
     } finally {
       setIsUploading(false)
     }
@@ -252,7 +248,7 @@ function UpdateAvatar() {
         onChange={handleFileChange}
       />
       <Button variant='outline' onClick={handleSelectFile} disabled={isUploading}>
-        {t('account.update-avatar')}
+        {strings.account['update-avatar']}
       </Button>
     </div>
   )

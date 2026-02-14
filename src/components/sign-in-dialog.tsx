@@ -1,7 +1,7 @@
 'use client'
 
 import { SiGithub } from '@icons-pack/react-simple-icons'
-import { useLocale, useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -10,8 +10,8 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Link } from '@/components/ui/link'
 import { useSignInDialog } from '@/hooks/use-sign-in-dialog'
-import { usePathname } from '@/i18n/routing'
 import { authClient } from '@/lib/auth-client'
+import { strings } from '@/lib/strings'
 
 import { Spinner } from './ui/spinner'
 
@@ -45,9 +45,7 @@ function SignInDialog() {
   const { open, setOpen, closeDialog: closeSignInDialog } = useSignInDialog()
   const [isPending, setIsPending] = useState(false)
   const [lastUsedProvider, setLastUsedProvider] = useState<Provider | null>(null)
-  const t = useTranslations()
   const pathname = usePathname()
-  const locale = useLocale()
 
   useEffect(() => {
     const provider = localStorage.getItem('last-used-provider') as Provider | null
@@ -58,14 +56,14 @@ function SignInDialog() {
     localStorage.setItem('last-used-provider', provider)
     await authClient.signIn.social({
       provider,
-      callbackURL: `/${locale}${pathname}`,
+      callbackURL: pathname || '/',
       fetchOptions: {
         onSuccess: () => {
           setIsPending(false)
         },
         onError: () => {
           setIsPending(false)
-          toast.error(t('error.sign-in-error'))
+          toast.error(strings.error['sign-in-error'])
         },
         onRequest: () => {
           setIsPending(true)
@@ -84,8 +82,8 @@ function SignInDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className='sm:max-w-120'>
         <DialogHeader>
-          <DialogTitle className='text-left text-2xl'>{t('common.sign-in')}</DialogTitle>
-          <DialogDescription className='text-left'>{t('dialog.sign-in.description')}</DialogDescription>
+          <DialogTitle className='text-left text-2xl'>{strings.common['sign-in']}</DialogTitle>
+          <DialogDescription className='text-left'>{strings.dialog['sign-in'].description}</DialogDescription>
         </DialogHeader>
         <div className='my-6 flex flex-col gap-4'>
           <Button
@@ -95,7 +93,7 @@ function SignInDialog() {
             data-testid='github-sign-in-button'
           >
             {isPending ? <Spinner /> : <SiGithub />}
-            {t('dialog.sign-in.continue-with', { provider: 'GitHub' })}
+            {strings.dialog['sign-in']['continue-with'].replace('{provider}', 'GitHub')}
             {lastUsedProvider === 'github' && <LastUsed />}
           </Button>
           <Button
@@ -105,23 +103,19 @@ function SignInDialog() {
             disabled={isPending}
           >
             {isPending ? <Spinner /> : <GoogleIcon />}
-            {t('dialog.sign-in.continue-with', { provider: 'Google' })}
+            {strings.dialog['sign-in']['continue-with'].replace('{provider}', 'Google')}
             {lastUsedProvider === 'google' && <LastUsed />}
           </Button>
         </div>
         <div className='text-center text-xs text-muted-foreground'>
-          {t.rich('dialog.sign-in.notice', {
-            terms: (chunks) => (
-              <Link href='/terms' className='text-foreground underline' onClick={closeDialog}>
-                {chunks}
-              </Link>
-            ),
-            privacy: (chunks) => (
-              <Link href='/privacy' className='text-foreground underline' onClick={closeDialog}>
-                {chunks}
-              </Link>
-            ),
-          })}
+          By continuing, you agree to our{' '}
+          <Link href='/terms' className='text-foreground underline' onClick={closeDialog}>
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link href='/privacy' className='text-foreground underline' onClick={closeDialog}>
+            Privacy Policy
+          </Link>
         </div>
       </DialogContent>
     </Dialog>
@@ -129,11 +123,9 @@ function SignInDialog() {
 }
 
 function LastUsed() {
-  const t = useTranslations()
-
   return (
     <Badge variant='outline' className='absolute -top-2 -right-2 bg-background'>
-      {t('dialog.sign-in.last-used')}
+      {strings.dialog['sign-in']['last-used']}
     </Badge>
   )
 }

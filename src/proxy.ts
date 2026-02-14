@@ -1,11 +1,12 @@
 import type { NextRequest } from 'next/server'
 
-import { i18nMiddleware } from '@/i18n/middleware'
+import { NextResponse } from 'next/server'
+
 import { env } from '@/lib/env'
 
 const IS_PREVIEW = env.VERCEL_ENV === 'preview'
 
-export function proxy(request: NextRequest) {
+export function proxy(_request: NextRequest) {
   const csp = `
     default-src 'none';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.nelsonlai.dev https://*.posthog.com https://va.vercel-scripts.com ${IS_PREVIEW ? 'https://vercel.live' : ''};
@@ -23,7 +24,7 @@ export function proxy(request: NextRequest) {
     ${IS_PREVIEW ? 'frame-src https://vercel.live;' : ''}
   `
 
-  const response = i18nMiddleware(request)
+  const response = NextResponse.next()
 
   response.headers.set('Content-Security-Policy', csp.replaceAll('\n', ''))
 
@@ -31,18 +32,6 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Match all request paths except for the ones starting with:
-  // - api (API routes)
-  // - rpc (oRPC routes)
-  // - _next/static (static files)
-  // - _next/image (image optimization files)
-  // - _vercel (Vercel internal)
-  // - _ph (PostHog)
-  // - folders in public (which resolve to /foldername)
-  // - favicon.ico (favicon file)
-  // - sitemap.xml
-  // - robots.txt
-  // - site.webmanifest
   matcher: [
     '/((?!api|rpc|_next/static|_next/image|_vercel|_ph|favicon|android-chrome|apple-touch-icon|fonts|images|videos|favicon.ico|sitemap.xml|robots.txt|site.webmanifest).*)',
   ],

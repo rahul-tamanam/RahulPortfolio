@@ -1,13 +1,10 @@
 import type { NextConfig } from 'next'
 
 import { withContentCollections } from '@content-collections/next'
-import createNextIntlPlugin from 'next-intl/plugin'
 
 import { IS_PRODUCTION } from '@/lib/constants'
 import { env } from '@/lib/env'
 import { withPostHog } from '@/lib/posthog'
-
-const withNextIntl = createNextIntlPlugin()
 
 const remotePatterns: NonNullable<NextConfig['images']>['remotePatterns'] = [
   {
@@ -74,11 +71,6 @@ const config: NextConfig = {
   redirects() {
     return [
       {
-        source: '/pc-specs',
-        destination: '/uses',
-        permanent: true,
-      },
-      {
         source: '/atom',
         destination: '/rss.xml',
         permanent: true,
@@ -135,4 +127,4 @@ const config: NextConfig = {
   },
 }
 
-export default withPostHog(withContentCollections(withNextIntl(config)))
+export default withPostHog(withContentCollections(config))

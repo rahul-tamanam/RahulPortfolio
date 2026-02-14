@@ -1,7 +1,6 @@
 'use client'
 
 import { MenuIcon } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -15,9 +14,9 @@ import {
 } from '@/components/ui/drawer'
 import { Link } from '@/components/ui/link'
 import { ACCOUNT_SIDEBAR_LINKS } from '@/config/links'
+import { strings } from '@/lib/strings'
 
 function AccountMobileNav() {
-  const t = useTranslations()
   const [open, setOpen] = useState(false)
 
   function handleCloseDrawer() {
@@ -31,7 +30,7 @@ function AccountMobileNav() {
           variant='outline'
           size='icon'
           className='size-10 md:hidden'
-          aria-label={t('account.open-navigation-menu')}
+          aria-label={strings.account['open-navigation-menu']}
         >
           <MenuIcon className='size-4' />
         </Button>
@@ -45,7 +44,7 @@ function AccountMobileNav() {
           {ACCOUNT_SIDEBAR_LINKS.map((link) => (
             <li key={link.href}>
               <Link href={link.href} onClick={handleCloseDrawer} className='block py-2.5 text-muted-foreground'>
-                {t(link.labelKey)}
+                {link.label}
               </Link>
             </li>
           ))}

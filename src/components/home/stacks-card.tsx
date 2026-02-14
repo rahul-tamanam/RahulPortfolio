@@ -1,68 +1,93 @@
 'use client'
 
 import {
-  SiCloudflare,
+  SiApachehadoop,
+  SiApachehive,
+  SiApachespark,
+  SiCloudera,
   SiCss,
-  SiDrizzle,
-  SiFigma,
-  SiFirebase,
-  SiGit,
+  SiDjango,
+  SiDocker,
   SiHtml5,
   SiJavascript,
-  SiMarkdown,
+  SiMongodb,
   SiMysql,
-  SiNextdotjs,
   SiNodedotjs,
   SiPostgresql,
-  SiPrisma,
   SiPython,
-  SiRadixui,
+  SiR,
   SiReact,
-  SiReactquery,
-  SiTailwindcss,
-  SiTypescript,
-  SiVite,
-  SiVitest,
 } from '@icons-pack/react-simple-icons'
 import { ZapIcon } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-
 import { Marquee } from '@/components/ui/marquee'
+import { strings } from '@/lib/strings'
+import { cn } from '@/utils/cn'
+
+const iconClassName = 'size-10 shrink-0'
+
+// Top row: Python, R, MySQL, Pyspark, Hadoop (HDFS), Hive, Impala, Postgres, Mongo
+const TOP_STACKS = [
+  { Icon: SiPython, label: 'Python' },
+  { Icon: SiR, label: 'R' },
+  { Icon: SiMysql, label: 'MySQL' },
+  { Icon: SiApachespark, label: 'PySpark' },
+  { Icon: SiApachehadoop, label: 'Hadoop (HDFS)' },
+  { Icon: SiApachehive, label: 'Hive' },
+  { Icon: SiCloudera, label: 'Impala' },
+  { Icon: SiPostgresql, label: 'Postgres' },
+  { Icon: SiMongodb, label: 'Mongo' },
+]
+
+// Second row: Docker, React, JavaScript, Node, HTML, CSS, Django, PowerBI, Tableau, Excel
+const SECOND_STACKS = [
+  { Icon: SiDocker, label: 'Docker' },
+  { Icon: SiReact, label: 'React' },
+  { Icon: SiJavascript, label: 'JavaScript' },
+  { Icon: SiNodedotjs, label: 'Node' },
+  { Icon: SiHtml5, label: 'HTML' },
+  { Icon: SiCss, label: 'CSS' },
+  { Icon: SiDjango, label: 'Django' },
+  { label: 'PowerBI' },
+  { label: 'Tableau' },
+  { label: 'Excel' },
+]
+
+function StackItem({
+  item,
+}: {
+  item: { Icon?: React.ComponentType<{ className?: string }>; label: string }
+}) {
+  if (item.Icon) {
+    return <item.Icon className={iconClassName} aria-label={item.label} />
+  }
+  return (
+    <span
+      className={cn(
+        'flex size-10 shrink-0 items-center justify-center rounded px-1.5 text-xs font-medium text-muted-foreground',
+      )}
+      title={item.label}
+    >
+      {item.label}
+    </span>
+  )
+}
 
 function StacksCard() {
-  const t = useTranslations()
-
   return (
     <div className='flex h-60 flex-col gap-2 overflow-hidden rounded-2xl p-4 shadow-feature-card lg:p-6'>
       <div className='flex items-center gap-2'>
         <ZapIcon className='size-4.5' />
-        <h2 className='text-sm'>{t('homepage.about-me.stacks')}</h2>
+        <h2 className='text-sm'>{strings.homepage['about-me'].skills}</h2>
       </div>
       <Marquee gap='20px' className='py-4'>
-        <SiHtml5 className='size-10' />
-        <SiCss className='size-10' />
-        <SiJavascript className='size-10' />
-        <SiTypescript className='size-10' />
-        <SiFigma className='size-10' />
-        <SiTailwindcss className='size-10' />
-        <SiNextdotjs className='size-10' />
-        <SiReact className='size-10' />
-        <SiPython className='size-10' />
-        <SiPostgresql className='size-10' />
-        <SiRadixui className='size-10' />
+        {TOP_STACKS.map((item) => (
+          <StackItem key={item.label} item={item} />
+        ))}
       </Marquee>
       <Marquee gap='20px' className='py-4' reverse>
-        <SiPrisma className='size-10' />
-        <SiMysql className='size-10' />
-        <SiFirebase className='size-10' />
-        <SiGit className='size-10' />
-        <SiVite className='size-10' />
-        <SiDrizzle className='size-10' />
-        <SiCloudflare className='size-10' />
-        <SiMarkdown className='size-10' />
-        <SiVitest className='size-10' />
-        <SiNodedotjs className='size-10' />
-        <SiReactquery className='size-10' />
+        {SECOND_STACKS.map((item) => (
+          <StackItem key={item.label} item={item} />
+        ))}
       </Marquee>
     </div>
   )

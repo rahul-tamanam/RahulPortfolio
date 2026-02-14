@@ -4,7 +4,7 @@ import type { SessionListOutput } from '@/orpc/client'
 
 import Bowser from 'bowser'
 import { BotIcon, InfoIcon, MonitorIcon, SmartphoneIcon, TabletIcon, TvIcon } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 import { Badge } from '@/components/ui/badge'
@@ -12,15 +12,14 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useListSessions, useRevokeSession } from '@/hooks/queries/auth.query'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
-import { useRouter } from '@/i18n/routing'
 import { useSession } from '@/lib/auth-client'
+import { strings } from '@/lib/strings'
 
 import Tip from '../tip'
 
 import ActiveSessionsSkeleton from './active-sessions-skeleton'
 
 function ActiveSessions() {
-  const t = useTranslations()
   const { data, isSuccess, isLoading, isError } = useListSessions()
 
   const sortedSessions =
@@ -35,9 +34,9 @@ function ActiveSessions() {
 
   return (
     <div className='space-y-6'>
-      <h2 className='text-lg font-semibold'>{t('account.active-sessions')}</h2>
+      <h2 className='text-lg font-semibold'>{strings.account['active-sessions']}</h2>
       {isLoading && <ActiveSessionsSkeleton />}
-      {isError && <div>{t('error.something-went-wrong')}</div>}
+      {isError && <div>{strings.error['something-went-wrong']}</div>}
       {sortedSessions && (
         <div className='space-y-4'>
           {sortedSessions.map((session) => (
@@ -46,7 +45,7 @@ function ActiveSessions() {
         </div>
       )}
       {sortedSessions && sortedSessions.length === 0 && (
-        <Card className='py-12 text-center'>{t('account.no-active-sessions')}</Card>
+        <Card className='py-12 text-center'>{strings.account['no-active-sessions']}</Card>
       )}
     </div>
   )
@@ -66,7 +65,6 @@ const PLATFORM_ICONS = {
 
 function Session(props: SessionProps) {
   const { session } = props
-  const t = useTranslations()
   const { refetch: refetchSession } = useSession()
   const router = useRouter()
 
@@ -75,15 +73,15 @@ function Session(props: SessionProps) {
   const platformType = (platform.type ?? 'desktop') as keyof typeof PLATFORM_ICONS
   const PlatformIcon = PLATFORM_ICONS[platformType]
 
-  const browserName = browser.name ?? t('common.unknown')
+  const browserName = browser.name ?? strings.common.unknown
   const browserVersion = browser.version ? `v${browser.version}` : ''
-  const osName = os.name ?? t('common.unknown')
+  const osName = os.name ?? strings.common.unknown
 
-  const ipAddress = session.ipAddress ?? t('common.unknown')
+  const ipAddress = session.ipAddress ?? strings.common.unknown
   const lastActive = useFormattedDate(session.createdAt, { formatName: 'long' })
 
   const { mutate: revokeSession, isPending: isRevoking } = useRevokeSession(() => {
-    toast.success(t('success.session-revoked'))
+    toast.success(strings.success['session-revoked'])
     if (session.isCurrentSession) {
       router.push('/')
       refetchSession()
@@ -105,7 +103,7 @@ function Session(props: SessionProps) {
           <div className='space-y-1'>
             <div className='flex h-12 items-center gap-4 font-semibold'>
               <span className='text-lg'>{osName}</span>{' '}
-              {session.isCurrentSession && <Badge>{t('account.this-device')}</Badge>}
+              {session.isCurrentSession && <Badge>{strings.account['this-device']}</Badge>}
             </div>
             <div className='space-y-1 text-sm'>
               <div>
@@ -127,7 +125,7 @@ function Session(props: SessionProps) {
           </div>
         </div>
         <Button variant='destructive' size='sm' onClick={handleRevoke} disabled={isRevoking}>
-          {t('account.revoke-session')}
+          {strings.account['revoke-session']}
         </Button>
       </div>
     </Card>

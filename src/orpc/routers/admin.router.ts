@@ -1,15 +1,7 @@
-import { comments, users } from '@/db/schemas'
+import { users } from '@/db/schemas'
 
 import { adminProcedure } from '../procedures'
-import { ListCommentsOutputSchema, ListUsersOutputSchema } from '../schemas/admin.schema'
-
-const listComments = adminProcedure.output(ListCommentsOutputSchema).handler(async ({ context }) => {
-  const result = await context.db.select().from(comments)
-
-  return {
-    comments: result,
-  }
-})
+import { ListUsersOutputSchema } from '../schemas/admin.schema'
 
 const listUsers = adminProcedure.output(ListUsersOutputSchema).handler(async ({ context }) => {
   const result = await context.db
@@ -28,9 +20,6 @@ const listUsers = adminProcedure.output(ListUsersOutputSchema).handler(async ({ 
 })
 
 export const adminRouter = {
-  comment: {
-    list: listComments,
-  },
   user: {
     list: listUsers,
   },

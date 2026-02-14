@@ -1,16 +1,13 @@
 import type { SidebarLink } from '@/config/admin-sidebar-links'
-
-import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 
 import { Link } from '@/components/ui/link'
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar'
-import { usePathname } from '@/i18n/routing'
 
 type AdminNavLinkProps = SidebarLink
 
 function AdminNavLink(props: AdminNavLinkProps) {
-  const { titleKey, url, icon: Icon } = props
-  const t = useTranslations()
+  const { title, url, icon: Icon } = props
   const pathname = usePathname()
   const isActive = url === pathname
 
@@ -21,7 +18,7 @@ function AdminNavLink(props: AdminNavLinkProps) {
         render={
           <Link href={url}>
             <Icon />
-            <span>{t(titleKey)}</span>
+            <span>{title}</span>
           </Link>
         }
       />

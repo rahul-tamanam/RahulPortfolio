@@ -1,7 +1,7 @@
 'use client'
 
 import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon, UserCircleIcon } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { Fragment, useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -19,7 +19,7 @@ import { SOCIAL_LINKS } from '@/config/links'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { useSignInDialog } from '@/hooks/use-sign-in-dialog'
 import { useSignOut } from '@/hooks/use-sign-out'
-import { useRouter } from '@/i18n/routing'
+import { strings } from '@/lib/strings'
 import { useSession } from '@/lib/auth-client'
 
 type CommandAction = {
@@ -28,7 +28,7 @@ type CommandAction = {
   onSelect: () => void | Promise<void>
 }
 
-type CommandGroup = {
+type CommandGroupType = {
   name: string
   actions: CommandAction[]
 }
@@ -37,7 +37,6 @@ function CommandMenu() {
   const [isOpen, setIsOpen] = useState(false)
   const [copy] = useCopyToClipboard()
   const { data: session } = useSession()
-  const t = useTranslations()
   const { openDialog } = useSignInDialog()
   const router = useRouter()
   const signOut = useSignOut({ redirectTo: '/' })
@@ -98,19 +97,19 @@ function CommandMenu() {
   const accountActions: CommandAction[] = session
     ? [
         {
-          title: t('common.labels.account'),
+          title: strings.common.labels.account,
           icon: <UserCircleIcon />,
           onSelect: handleAccountNavigate,
         },
         {
-          title: t('common.sign-out'),
+          title: strings.common['sign-out'],
           icon: <LogOutIcon />,
           onSelect: handleSignOut,
         },
       ]
     : [
         {
-          title: t('common.sign-in'),
+          title: strings.common['sign-in'],
           icon: <LogInIcon />,
           onSelect: handleSignIn,
         },
@@ -118,15 +117,15 @@ function CommandMenu() {
 
   const generalActions: CommandAction[] = [
     {
-      title: t('command-menu.actions.copy-link'),
+      title: strings['command-menu'].actions['copy-link'],
       icon: <LinkIcon />,
       onSelect: copyCurrentUrl,
     },
     {
-      title: t('command-menu.actions.source-code'),
+      title: strings['command-menu'].actions['source-code'],
       icon: <CodeIcon />,
       onSelect: () => {
-        openExternalLink('https://github.com/nelsonlaidev/nelsonlai.dev')
+        openExternalLink('https://github.com/rahultamanam/nelsonlai.dev')
       },
     },
   ]
@@ -139,10 +138,10 @@ function CommandMenu() {
     },
   }))
 
-  const groups: CommandGroup[] = [
-    { name: t('common.labels.account'), actions: accountActions },
-    { name: t('common.labels.general'), actions: generalActions },
-    { name: t('command-menu.groups.social'), actions: socialActions },
+  const groups: CommandGroupType[] = [
+    { name: strings.common.labels.account, actions: accountActions },
+    { name: strings.common.labels.general, actions: generalActions },
+    { name: strings['command-menu'].groups.social, actions: socialActions },
   ]
 
   return (
@@ -151,16 +150,16 @@ function CommandMenu() {
         variant='ghost'
         size='icon'
         onClick={openMenu}
-        aria-label={t('command-menu.open-menu')}
+        aria-label={strings['command-menu']['open-menu']}
         data-testid='command-menu-button'
       >
         <CommandIcon />
       </Button>
       <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
         <Command>
-          <CommandInput placeholder={t('command-menu.placeholder')} />
+          <CommandInput placeholder={strings['command-menu'].placeholder} />
           <CommandList>
-            <CommandEmpty>{t('command-menu.no-results')}</CommandEmpty>
+            <CommandEmpty>{strings['command-menu']['no-results']}</CommandEmpty>
             {groups.map((group, index) => (
               <Fragment key={group.name}>
                 <CommandGroup heading={group.name}>

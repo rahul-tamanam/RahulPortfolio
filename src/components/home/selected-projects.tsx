@@ -4,12 +4,12 @@ import type { Project } from 'content-collections'
 
 import { ArrowUpRightIcon, LightbulbIcon } from 'lucide-react'
 import { motion, useInView } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import { useRef } from 'react'
 
 import BlurImage from '@/components/blur-image'
 import { buttonVariants } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
+import { strings } from '@/lib/strings'
 import { cn } from '@/utils/cn'
 
 const variants = {
@@ -35,7 +35,6 @@ function SelectedProjects(props: SelectedProjectsProps) {
   const { projects } = props
   const projectsRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(projectsRef, { once: true, margin: '-100px' })
-  const t = useTranslations()
 
   return (
     <motion.div
@@ -62,7 +61,7 @@ function SelectedProjects(props: SelectedProjectsProps) {
           duration: 0.3,
         }}
       >
-        {t('homepage.selected-projects.title')}
+        {strings.homepage['selected-projects'].title}
       </motion.h2>
       <motion.div
         className='mt-12 grid gap-4 md:grid-cols-2'
@@ -84,7 +83,7 @@ function SelectedProjects(props: SelectedProjectsProps) {
       </motion.div>
       <div className='my-8 flex items-center justify-center'>
         <Link href='/projects' className={cn(buttonVariants({ variant: 'outline' }))}>
-          {t('homepage.selected-projects.more')}
+          {strings.homepage['selected-projects'].more}
         </Link>
       </div>
     </motion.div>
@@ -94,14 +93,13 @@ function SelectedProjects(props: SelectedProjectsProps) {
 function Card(props: CardProps) {
   const { project } = props
   const { slug, name, description } = project
-  const t = useTranslations()
 
   return (
     <Link key={slug} href={`/projects/${slug}`} className='group relative rounded-2xl p-2 shadow-feature-card'>
       <div className='flex items-center justify-between p-4'>
         <div className='flex items-center gap-3'>
           <LightbulbIcon className='size-4.5' />
-          <h2>{t('homepage.selected-projects.card')}</h2>
+          <h2>{strings.homepage['selected-projects'].card}</h2>
         </div>
         <ArrowUpRightIcon className='size-4.5 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>

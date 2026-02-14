@@ -1,2 +1,1 @@
-export { default as CommentEmailTemplate } from './templates/comment'
-export { default as ReplyEmailTemplate } from './templates/reply'
+// Email templates removed with blog/comment system

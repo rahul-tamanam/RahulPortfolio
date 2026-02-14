@@ -1,11 +1,11 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 import BlurImage from '@/components/blur-image'
 import { MY_NAME } from '@/lib/constants'
+import { strings } from '@/lib/strings'
 
 const TEXTS = [
   {
@@ -49,7 +49,6 @@ const variants = {
 
 function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const t = useTranslations()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -68,9 +67,9 @@ function Hero() {
     <div className='my-16 space-y-6'>
       <div className='flex justify-between gap-8'>
         <div className='flex flex-col gap-4'>
-          <h1 className='flex flex-col flex-wrap gap-2 text-xl font-semibold sm:text-3xl'>
+          <h1 className='flex flex-col flex-wrap gap-2 text-2xl font-semibold sm:text-4xl'>
             <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ ease: 'easeOut' }}>
-              {t('homepage.hero.title-top')}
+              {strings.homepage.hero['title-top']}
             </motion.div>
             <motion.div
               initial={{ x: 30, opacity: 0 }}
@@ -79,7 +78,7 @@ function Hero() {
               className='flex gap-2'
             >
               <motion.div layout key='title-middle-left'>
-                {t('homepage.hero.title-middle-left')}
+                {strings.homepage.hero['title-middle-left']}
               </motion.div>
               <div className='relative overflow-hidden'>
                 <AnimatePresence mode='popLayout'>
@@ -96,16 +95,16 @@ function Hero() {
                     }}
                     className='inline-flex items-center justify-center'
                   >
-                    <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
+                    <span className={textItem.className}>{strings.homepage.hero[textItem.key]}</span>
                   </motion.div>
                 </AnimatePresence>
               </div>
               <motion.div layout key='title-middle-right'>
-                {t('homepage.hero.title-middle-right')}
+                {strings.homepage.hero['title-middle-right']}
               </motion.div>
             </motion.div>
             <motion.div initial={{ x: 40, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ ease: 'easeOut' }}>
-              {t('homepage.hero.title-bottom')}
+              {strings.homepage.hero['title-bottom']}
             </motion.div>
           </h1>
           <motion.div
@@ -114,11 +113,27 @@ function Hero() {
             transition={{ ease: 'easeOut' }}
             className='text-sm text-muted-foreground'
           >
-            {t('homepage.hero.location-timezone')}
+            {strings.homepage.hero['location-timezone']}
           </motion.div>
+          <motion.a
+            href='/resume.pdf'
+            download='Rahul-Tamanam-Resume.pdf'
+            initial={{ x: 60, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ ease: 'easeOut' }}
+            className='group relative -mt-4 inline-flex min-w-[96px] shrink-0 self-start overflow-hidden rounded-full p-[2px] [box-shadow:0_0_12px_2px_rgb(255_126_0/0.6),0_0_24px_8px_rgb(255_87_87/0.4)] transition-transform hover:scale-105'
+          >
+            <span
+              className='absolute inset-0 rounded-full bg-[linear-gradient(90deg,#FF7E00,#FF5757)]'
+              aria-hidden
+            />
+            <span className='relative z-10 flex flex-1 items-center justify-center rounded-full bg-background px-4 py-2 text-base font-medium text-foreground transition-[background-color,color,text-shadow] duration-300 group-hover:bg-transparent group-hover:text-white group-hover:[text-shadow:0_1px_3px_rgba(0,0,0,0.6)]'>
+              {strings.homepage.hero['hire-me']}
+            </span>
+          </motion.a>
         </div>
         <motion.div
-          className='relative hidden size-28 md:block'
+          className='relative hidden size-40 md:block'
           initial={{
             scale: 0,
           }}
@@ -130,8 +145,8 @@ function Hero() {
           }}
         >
           <BlurImage
-            src='/images/avatar.png'
-            className='size-28 rounded-full'
+            src='/images/picture.png'
+            className='size-40 rounded-full'
             width={1024}
             height={1024}
             alt={`${MY_NAME}'s Logo`}

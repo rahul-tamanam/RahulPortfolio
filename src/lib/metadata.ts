@@ -2,9 +2,8 @@ import type { Metadata } from 'next'
 
 import { deepmerge } from '@fastify/deepmerge'
 
-import { routing } from '@/i18n/routing'
 import { getBaseUrl } from '@/utils/get-base-url'
-import { getLocalizedPath } from '@/utils/get-localized-path'
+import { getPath } from '@/utils/get-path'
 
 import { MY_NAME, OG_IMAGE_HEIGHT, OG_IMAGE_TYPE, OG_IMAGE_WIDTH } from './constants'
 
@@ -13,20 +12,16 @@ type Options = {
   pathname?: string
   title: string
   description: string
-  locale: string
 } & Partial<Metadata>
 
 export function createMetadata(options: Options): Metadata {
-  const { root = false, pathname, title, description, locale, ...rest } = options
+  const { root = false, pathname = '', title, description, ...rest } = options
   const baseUrl = getBaseUrl()
 
   const resolvedTitle = root ? title : `${title} | ${MY_NAME}`
-  const resolvedOGImageUrl = getLocalizedPath({
-    locale,
-    pathname: pathname ? `/og${pathname}/image.webp` : '/og/image.webp',
-  })
+  const resolvedOGImageUrl = getPath(pathname ? `/og${pathname}/image.webp` : '/og/image.webp')
 
-  const currentUrl = getLocalizedPath({ locale, pathname })
+  const currentUrl = getPath(pathname)
 
   return deepmerge()(
     {
@@ -36,10 +31,6 @@ export function createMetadata(options: Options): Metadata {
       manifest: `${baseUrl}/site.webmanifest`,
       alternates: {
         canonical: currentUrl,
-        languages: {
-          ...Object.fromEntries(routing.locales.map((l) => [l, getLocalizedPath({ locale: l, pathname })])),
-          'x-default': getLocalizedPath({ locale: routing.defaultLocale, pathname }),
-        },
       },
       robots: {
         index: true,
@@ -62,7 +53,7 @@ export function createMetadata(options: Options): Metadata {
         url: currentUrl,
         siteName: MY_NAME,
         type: 'website',
-        locale,
+        locale: 'en',
         images: [
           {
             url: resolvedOGImageUrl,
@@ -75,7 +66,7 @@ export function createMetadata(options: Options): Metadata {
       twitter: {
         card: 'summary_large_image',
         siteId: '1152256803746377730',
-        creator: '@nelsonlaidev',
+        creator: '@rahultamanam',
         creatorId: '1152256803746377730',
       },
       icons: {

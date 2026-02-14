@@ -4,11 +4,10 @@ import type { Project } from 'content-collections'
 
 import { ArrowUpRightIcon } from 'lucide-react'
 import { motion } from 'motion/react'
-import { useTranslations } from 'next-intl'
 
 import { buttonVariants } from '@/components/ui/button'
 import { Link } from '@/components/ui/link'
-import { GITHUB_USERNAME } from '@/lib/constants'
+import { strings } from '@/lib/strings'
 import { cn } from '@/utils/cn'
 
 const animation = {
@@ -26,9 +25,8 @@ type ProjectHeaderProps = Project
 
 function ProjectHeader(props: ProjectHeaderProps) {
   const { name, description, homepage, github } = props
-  const t = useTranslations()
 
-  const repo = github.split('/').pop()
+  const repoPath = github.replace(/^https?:\/\/github\.com\/?/, '') // e.g. "username/repo"
 
   return (
     <div className='space-y-8 pt-10'>
@@ -46,12 +44,12 @@ function ProjectHeader(props: ProjectHeaderProps) {
       >
         {homepage && (
           <Link href={homepage} className={cn(buttonVariants(), 'group')}>
-            {t('projects.visit-website')}
+            {strings.projects['visit-website']}
             <ArrowUpRightIcon className='size-5 transition-transform group-hover:-rotate-12' />
           </Link>
         )}
         <Link href={github} className={cn(buttonVariants(), 'group')}>
-          {GITHUB_USERNAME}/{repo}
+          {repoPath}
           <ArrowUpRightIcon className='size-5 transition-transform group-hover:-rotate-12' />
         </Link>
       </motion.div>

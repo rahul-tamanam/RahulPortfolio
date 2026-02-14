@@ -1,18 +1,15 @@
 import type { MetadataRoute } from 'next'
 
-import { routing } from '@/i18n/routing'
-import { getLocalizedPath } from '@/utils/get-localized-path'
+import { getPath } from '@/utils/get-path'
 import { getPathnames } from '@/utils/get-pathnames'
 
 function sitemap(): MetadataRoute.Sitemap {
   const pathnames = getPathnames()
 
-  return routing.locales.flatMap((locale) => {
-    return pathnames.map((pathname) => ({
-      url: getLocalizedPath({ locale, pathname }),
-      lastModified: new Date(),
-    }))
-  })
+  return pathnames.map((pathname) => ({
+    url: getPath(pathname),
+    lastModified: new Date(),
+  }))
 }
 
 export default sitemap

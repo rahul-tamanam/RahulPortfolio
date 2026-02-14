@@ -1,20 +1,18 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import { useListUsersAdmin } from '@/hooks/queries/admin.query'
+import { strings } from '@/lib/strings'
 
 import UsersTable from '../tables/users'
 
 function AdminUsers() {
   const { data, isSuccess, isLoading, isError } = useListUsersAdmin()
-  const t = useTranslations()
 
   return (
     <>
       {isSuccess && <UsersTable users={data.users} />}
-      {isLoading && <div>{t('common.loading')}</div>}
-      {isError && <div>{t('error.failed-to-fetch-users-data')}</div>}
+      {isLoading && <div>{strings.common.loading}</div>}
+      {isError && <div>{strings.error['failed-to-fetch-users-data']}</div>}
     </>
   )
 }
