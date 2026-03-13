@@ -4,7 +4,7 @@
 export const strings = {
   about: {
     description:
-      "I’m Rahul Tamanam, a graduate student in Business Analytics and Artificial Intelligence at The University of Texas at Dallas. With a strong background in IT and hands-on expertise in artificial intelligence and machine learning, I enjoy turning complex data into practical solutions. I’m driven by curiosity and a genuine interest in building systems that create real impact, whether that’s improving decision-making, automating processes, or unlocking new insights through AI",
+      'I’m Rahul Tamanam, a graduate student in Business Analytics and Artificial Intelligence at The University of Texas at Dallas. With a strong background in IT and hands-on expertise in artificial intelligence and machine learning, I enjoy turning complex data into practical solutions. I’m driven by curiosity and a genuine interest in building systems that create real impact, whether that’s improving decision-making, automating processes, or unlocking new insights through AI',
   },
   account: {
     'account-created': 'Account created',
@@ -13,8 +13,7 @@ export const strings = {
     description: 'Manage your account.',
     'display-name': 'Display name',
     'edit-name': 'Edit name',
-    'edit-name-description':
-      'Change your display name. This name will be shown on your profile and comments.',
+    'edit-name-description': 'Change your display name. This name will be shown on your profile and comments.',
     email: 'Email',
     'no-active-sessions': 'No active sessions',
     'open-navigation-menu': 'Open navigation menu',
@@ -172,7 +171,7 @@ export const strings = {
       email: 'Email',
       message: 'Message',
       send: 'Send',
-      'send-success': 'Message sent! I\'ll get back to you soon.',
+      'send-success': "Message sent! I'll get back to you soon.",
       'send-error': 'Something went wrong. Please try again or email me directly.',
     },
     'get-in-touch': {
@@ -190,7 +189,7 @@ export const strings = {
       'title-bottom': '',
       'title-middle-left': 'I am',
       'title-middle-right': '',
-      'title-top': "Hey! I'm Rahul",
+      'title-top': "Howdy! I'm Rahul",
     },
     'selected-projects': {
       card: 'Project',
@@ -210,8 +209,7 @@ export const strings = {
     'link-to-section': 'Link to section',
   },
   privacy: {
-    description:
-      'This page explains how we handle your data and protect your privacy when you use our website.',
+    description: 'This page explains how we handle your data and protect your privacy when you use our website.',
   },
   projects: {
     description: 'Explore my projects and work.',

@@ -11,7 +11,6 @@ import { strings } from '@/lib/strings'
 
 import MobileNav from './mobile-nav'
 import Navbar from './navbar'
-import ThemeSwitcher from './theme-switcher'
 
 function LayoutHeader() {
   const pathname = usePathname()
@@ -58,7 +57,7 @@ function LayoutHeader() {
   return (
     <header
       ref={headerRef}
-      className='fixed inset-x-0 top-4 z-40 mx-auto flex h-15 max-w-5xl items-center justify-between rounded-2xl bg-background/30 px-8 shadow-xs saturate-100 backdrop-blur-md transition-colors data-[scrolled=true]:bg-background/80'
+      className='fixed inset-x-0 top-4 z-40 mx-auto flex h-15 max-w-5xl items-center justify-between rounded-2xl bg-background/40 px-8 shadow-xs saturate-100 backdrop-blur-3xl transition-colors data-[scrolled=true]:bg-background/90'
     >
       <Link
         href='#skip-nav'
@@ -84,7 +83,6 @@ function LayoutHeader() {
             </>
           }
         >
-          <ThemeSwitcher />
           <MobileNav />
         </ClientOnly>
       </div>

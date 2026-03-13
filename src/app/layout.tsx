@@ -10,6 +10,7 @@ import Analytics from '@/components/analytics'
 import Hello from '@/components/hello'
 import Providers from '@/components/providers'
 import SignInDialog from '@/components/sign-in-dialog'
+import SiteBackground from '@/components/site-background'
 import { cn } from '@/utils/cn'
 
 type LayoutProps = { children: React.ReactNode }
@@ -35,10 +36,16 @@ function Layout(props: LayoutProps) {
   const { children } = props
 
   return (
-    <html lang='en' className={cn(geistSans.variable, geistMono.variable)} data-scroll-behavior='smooth' suppressHydrationWarning>
+    <html
+      lang='en'
+      className={cn(geistSans.variable, geistMono.variable)}
+      data-scroll-behavior='smooth'
+      suppressHydrationWarning
+    >
       <body className='relative flex min-h-screen flex-col'>
         <NuqsAdapter>
           <Providers>
+            <SiteBackground />
             <Hello />
             {children}
             <Analytics />

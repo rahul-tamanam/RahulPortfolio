@@ -3,6 +3,7 @@
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 
+import { BorderRotate } from '@/components/ui/animated-gradient-border'
 import { strings } from '@/lib/strings'
 import { cn } from '@/utils/cn'
 
@@ -50,19 +51,11 @@ const cardContent = (experience: Experience) => (
   <>
     <h3 className='font-semibold text-foreground'>{experience.title}</h3>
     <p className='mt-1 text-sm text-muted-foreground'>{experience.location}</p>
-    <p className='mt-3 whitespace-pre-line text-sm leading-relaxed text-muted-foreground'>
-      {experience.description}
-    </p>
+    <p className='mt-3 text-sm/relaxed whitespace-pre-line text-muted-foreground'>{experience.description}</p>
   </>
 )
 
-function TimelineCard({
-  experience,
-  index,
-}: {
-  experience: Experience
-  index: number
-}) {
+function TimelineCard({ experience, index }: { experience: Experience; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardRef, { once: true, margin: '-50px' })
   const fromLeft = index % 2 === 0
@@ -93,9 +86,21 @@ function TimelineCard({
             {experience.startYear} – {experience.endYear}
           </span>
         </div>
-        <div className='w-full rounded-2xl bg-card p-5 shadow-feature-card ring-1 ring-border/50'>
-          {cardContent(experience)}
-        </div>
+        <BorderRotate
+          className='w-full'
+          animationMode='rotate-on-hover'
+          animationSpeed={3}
+          gradientColors={{
+            primary: '#1f2937',
+            secondary: '#4f46e5',
+            accent: '#22c55e',
+          }}
+          backgroundColor='var(--card)'
+          borderRadius={24}
+          borderWidth={1.5}
+        >
+          <div className='rounded-[inherit] bg-card p-5 shadow-feature-card'>{cardContent(experience)}</div>
+        </BorderRotate>
       </div>
 
       {/* Desktop: alternating left/center/right timeline */}
@@ -107,9 +112,21 @@ function TimelineCard({
         )}
       >
         {fromLeft ? (
-          <div className='w-full max-w-xl rounded-2xl bg-card p-5 shadow-feature-card ring-1 ring-border/50 transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg'>
-            {cardContent(experience)}
-          </div>
+          <BorderRotate
+            className='w-full max-w-xl transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg'
+            animationMode='rotate-on-hover'
+            animationSpeed={3}
+            gradientColors={{
+              primary: '#1f2937',
+              secondary: '#4f46e5',
+              accent: '#22c55e',
+            }}
+            backgroundColor='var(--card)'
+            borderRadius={24}
+            borderWidth={1.5}
+          >
+            <div className='rounded-[inherit] bg-card p-5 shadow-feature-card'>{cardContent(experience)}</div>
+          </BorderRotate>
         ) : (
           <div className='text-end text-sm font-medium text-muted-foreground'>
             {experience.startYear} – {experience.endYear}
@@ -130,8 +147,7 @@ function TimelineCard({
           style={{
             background:
               'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.12) 80%, transparent)',
-            boxShadow:
-              '0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5), 0 0 32px rgba(255,255,255,0.3)',
+            boxShadow: '0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5), 0 0 32px rgba(255,255,255,0.3)',
           }}
           aria-hidden
         />
@@ -150,9 +166,21 @@ function TimelineCard({
             {experience.startYear} – {experience.endYear}
           </div>
         ) : (
-          <div className='w-full max-w-xl rounded-2xl bg-card p-5 shadow-feature-card ring-1 ring-border/50 transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg'>
-            {cardContent(experience)}
-          </div>
+          <BorderRotate
+            className='w-full max-w-xl transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg'
+            animationMode='rotate-on-hover'
+            animationSpeed={3}
+            gradientColors={{
+              primary: '#1f2937',
+              secondary: '#4f46e5',
+              accent: '#22c55e',
+            }}
+            backgroundColor='var(--card)'
+            borderRadius={24}
+            borderWidth={1.5}
+          >
+            <div className='rounded-[inherit] bg-card p-5 shadow-feature-card'>{cardContent(experience)}</div>
+          </BorderRotate>
         )}
       </div>
     </motion.div>
@@ -176,7 +204,7 @@ function CareerHistory() {
 
       <div className='relative mt-12'>
         {/* Vertical timeline line */}
-        <div className='absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-border md:block' />
+        <div className='absolute top-0 left-1/2 hidden h-full w-px -translate-x-1/2 bg-border md:block' />
 
         <div className='flex flex-col gap-0'>
           {EXPERIENCES.map((experience, index) => (

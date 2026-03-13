@@ -5,6 +5,7 @@ import { motion, useInView } from 'motion/react'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 
+import { BorderRotate } from '@/components/ui/animated-gradient-border'
 import { Button } from '@/components/ui/button'
 import { strings } from '@/lib/strings'
 import { cn } from '@/utils/cn'
@@ -141,11 +142,25 @@ function Education() {
     >
       <h2 className='text-center text-3xl font-semibold md:text-4xl'>{strings.homepage.education.title}</h2>
 
-      <div className='mt-12 rounded-2xl p-6 shadow-feature-card lg:p-8'>
-        {EDUCATION_ENTRIES.map((entry) => (
-          <EducationEntryRow key={entry.id} entry={entry} />
-        ))}
-      </div>
+      <BorderRotate
+        className='mt-12 rounded-2xl shadow-feature-card'
+        animationMode='auto-rotate'
+        animationSpeed={4}
+        gradientColors={{
+          primary: '#1f2937',
+          secondary: '#4f46e5',
+          accent: '#22c55e',
+        }}
+        backgroundColor='var(--card)'
+        borderRadius={24}
+        borderWidth={1.5}
+      >
+        <div className='rounded-[inherit] bg-card p-6 lg:p-8'>
+          {EDUCATION_ENTRIES.map((entry) => (
+            <EducationEntryRow key={entry.id} entry={entry} />
+          ))}
+        </div>
+      </BorderRotate>
     </motion.section>
   )
 }
